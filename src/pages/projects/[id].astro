@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from "astro:content";
+import "../../assets/simple.css";
+import { z } from "astro/zod";
+import { undefined } from "astro:schema";
+
+export async function getStaticPaths() {
+  const project = await getCollection("projectEntries");
+  return project.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<header>
+  <nav>
+    {}
+    <a href={post.data.github}>Repository</a>
+    <a href={post.data.website}>Website</a>
+  </nav>
+  <h1>{post.data.title}</h1>
+  <p>{post.data.description}</p>
+</header>
+<Content />
+<a href="/">Return home.</a>

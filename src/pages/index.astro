@@ -1,11 +1,83 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import "../assets/simple.css";
+import { getCollection } from "astro:content";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = (await getCollection("projectEntries")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const exp = (await getCollection("experienceEntries")).sort(
+  (a, b) => b.data.endDate.valueOf() - a.data.endDate.valueOf(),
+);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="title" content="timothydun.xyz – Portfolio" />
+    <meta
+      name="description"
+      content="The portfolio of Timothy Duncan, a technical writer"
+    />
+    <meta name="viewport" content="width=device-width" />
+    <title>timothydun.xyz</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="https://github.com/timothydun-can">GitHub</a>
+        <a href="https://www.linkedin.com/in/timothydun/">LinkedIn</a>
+        <a href="mailto:timothydun@protonmail.com">Email</a>
+      </nav>
+      <h1>Timothy Duncan</h1>
+      <p>Technical Writer</p>
+    </header>
+    <main>
+      <section>
+        <p>
+          I'm Timothy Duncan, a technical writer with two years of experience
+          creating and maintaining reference documentation and user guides
+          across multiple industries. I've created two documentation websites
+          that serve an average of five thousand page views daily. I have
+          experience with multiple content management systems and documentation
+          methadologies.
+        </p>
+      </section>
+      <section>
+        <h2>Projects</h2>
+        <p>Below are a selection of projects I've completed.</p>
+
+        {
+          projects.map((project) => (
+            <details name="item">
+              <summary>{project.data.title}</summary>
+              <p>{project.data.description}</p>
+              <a class="button" href={`/projects/${project.id}`}>
+                Read more
+              </a>
+            </details>
+          ))
+        }
+      </section>
+      <section>
+        <h2>Experience</h2>
+        <p>Listed below is an abbreviated version of my recent work history.</p>
+        {
+          exp.map((emp) => (
+            <details name="item">
+              <summary>
+                {emp.data.title} – {emp.data.job}
+              </summary>
+              <p>{emp.data.description}</p>
+              <br />
+              <a class="button" href={`/experience/${emp.id}`}>
+                Read more
+              </a>
+            </details>
+          ))
+        }
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from "astro:content";
+import "../../assets/simple.css";
+
+export async function getStaticPaths() {
+  const companies = await getCollection("experienceEntries");
+  return companies.map((comp) => ({
+    params: { id: comp.id },
+    props: { comp },
+  }));
+}
+
+const { comp } = Astro.props;
+const { Content } = await render(comp);
+---
+
+<header>
+  <nav>
+    <a href="/">Return</a>
+  </nav>
+  <h1>{comp.data.title}</h1>
+  <p>{comp.data.job}</p>
+</header>
+<Content />
