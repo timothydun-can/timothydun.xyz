@@ -70,10 +70,6 @@ const exp = (await getCollection("experienceEntries")).sort(
                 {emp.data.title} – {emp.data.job}
               </summary>
               <p>{emp.data.description}</p>
-              <br />
-              <a class="button" href={`/experience/${emp.id}`}>
-                Read more
-              </a>
             </details>
           ))
         }
